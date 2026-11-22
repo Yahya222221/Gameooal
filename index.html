@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Epic Rocket</title>
+    <title>CrashX</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
@@ -17,7 +17,11 @@
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
+            transition: background-color 0.3s ease;
         }
+
+        /* تأثير الوميض عند الانفجار */
+        body.crash-flash { background-color: #2a0a0a; }
 
         /* ==================== 1. LOBBY SCREEN ==================== */
         #lobby-screen {
@@ -79,7 +83,7 @@
 
         .plane {
             position: absolute; font-size: 45px; z-index: 3; opacity: 0; transition: opacity 0.2s;
-            transform-origin: center; filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.9));
+            transform-origin: center; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
         }
         .plane.flying { opacity: 1; }
 
@@ -129,9 +133,18 @@
             border-left: 4px solid transparent; transition: all 0.3s ease;
             animation: slideIn 0.3s ease forwards;
         }
+        
+        /* تثبيت اللاعب الأساسي في الأعلى */
+        .player-row.user-row {
+            position: sticky;
+            top: 0;
+            z-index: 6;
+            background: #2a2b36;
+            border: 1px solid #3b82f6;
+        }
+
         @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        /* Win / Lose Colors */
         .player-row.win { 
             border-left-color: #10b981; 
             background: linear-gradient(90deg, rgba(16, 185, 129, 0.2) 0%, #1e1f26 100%); 
@@ -174,7 +187,7 @@
 
         .btn-sub { font-size: 15px; font-weight: 800; opacity: 0.9; margin-top: 5px; background: rgba(0,0,0,0.2); padding: 3px 12px; border-radius: 10px;}
 
-        /* Modal & Bottom Nav remain same */
+        /* Modal & Bottom Nav */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
         .modal-content { background: #1e1f26; width: 100%; border-top-left-radius: 25px; border-top-right-radius: 25px; padding: 25px; text-align: center; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .modal-content.show { transform: translateY(0); }
@@ -218,7 +231,7 @@
                 <div class="card-badge">🔥 HOT</div>
                 <div class="card-title">
                     <span class="rocket-icon">🚀</span>
-                    <span>ROCKET</span>
+                    <span>CrashX</span>
                 </div>
             </div>
         </div>
@@ -236,7 +249,7 @@
     <div id="game-screen">
         <div class="game-header">
             <button class="back-btn" onclick="closeGame()">← Back</button>
-            <div class="game-title">🎁 Epic Gift</div>
+            <div class="game-title">🎁 CrashX</div>
             <div class="balance-box">
                 💎 <span id="game-balance">0.00</span> +
             </div>
@@ -247,6 +260,7 @@
             
             <canvas id="game-canvas"></canvas>
             
+            <!-- سيتم تغيير هذا الرمز ديناميكياً -->
             <div class="plane" id="plane">🚀</div>
             
             <div class="multiplier-display waiting" id="multiplier-display">Waiting...</div>
@@ -301,7 +315,7 @@
         let countdownInterval = null;
         let animFrameId = null;
         
-        // Canvas Elements
+        // Canvas & Elements
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = canvas.offsetWidth;
@@ -309,7 +323,6 @@
         let startX = 40;
         let startY = height - 40;
 
-        // UI Elements
         const multDisplay = document.getElementById('multiplier-display');
         const plane = document.getElementById('plane');
         const actionBtn = document.getElementById('action-btn');
@@ -322,6 +335,10 @@
         const betInput = document.getElementById('bet-input');
         const historyBar = document.getElementById('history-bar');
         const playersList = document.getElementById('players-list');
+        const body = document.body;
+
+        // الرموز العشوائية للطيران
+        const flyingIcons = ['🚀', '💎', '⭐', '🛸', '👑', '🔥'];
 
         window.addEventListener('resize', () => {
             width = canvas.width = canvas.offsetWidth;
@@ -342,6 +359,7 @@
             clearInterval(countdownInterval);
             cancelAnimationFrame(animFrameId);
             gameState = 'WAITING';
+            body.classList.remove('crash-flash');
         }
 
         function updateBalanceUI() {
@@ -388,7 +406,7 @@
             btnMainText.innerText = "Cancel";
             btnSubText.innerText = `💎 ${currentBet.toFixed(2)}`;
             
-            addPlayerToList("You", "🧑‍💻", currentBet, "player-you");
+            addUserPlayerToList(currentBet);
         }
 
         function startRound() {
@@ -396,8 +414,12 @@
             hasBet = false;
             currentMultiplier = 1.00;
             ctx.clearRect(0, 0, width, height);
+            body.classList.remove('crash-flash');
             
+            // اختيار رمز عشوائي للطيران
+            plane.innerText = flyingIcons[Math.floor(Math.random() * flyingIcons.length)];
             plane.classList.remove('flying');
+            
             multDisplay.className = 'multiplier-display waiting';
             multDisplay.innerText = 'Waiting...';
             
@@ -415,7 +437,7 @@
 
         function startCountdown() {
             gameState = 'COUNTDOWN';
-            let time = 5; // 5 seconds is enough, 10 was too long
+            let time = 5;
             
             multDisplay.className = 'multiplier-display waiting';
             multDisplay.innerText = time;
@@ -464,15 +486,25 @@
             else crashPoint = 5.00 + (Math.random() * 95.0); 
 
             let startTime = performance.now();
+            let lastTime = startTime;
             
             function gameLoop(time) {
                 if (gameState !== 'FLYING') return;
-                const elapsed = (time - startTime) / 1000; // in seconds
                 
-                // --- NEW PHYSICS FORMULA ---
-                // Starts very slow, then accelerates exponentially
-                // At t=1s -> ~1.1x, t=2s -> ~1.5x, t=3s -> ~2.3x, t=5s -> ~6x
-                currentMultiplier = 1 + (Math.pow(elapsed, 2.5) * 0.4);
+                const deltaTime = (time - lastTime) / 1000; // الوقت بالثواني
+                lastTime = time;
+
+                // --- معادلة السرعة الجديدة ---
+                // تبدأ ببطء شديد، ثم تتسارع بعد 2x
+                let speed = 0;
+                if (currentMultiplier < 2.0) {
+                    speed = 0.25; // سرعة بطيئة جداً قبل 2x
+                } else {
+                    // بعد 2x، تتسارع بناءً على الرقم الحالي
+                    speed = 0.25 * (currentMultiplier / 2); 
+                }
+
+                currentMultiplier += speed * deltaTime;
                 
                 if (currentMultiplier >= crashPoint) {
                     crash();
@@ -484,11 +516,12 @@
                     btnSubText.innerText = `💎 ${(currentBet * currentMultiplier).toFixed(2)}`;
                 }
 
-                // Canvas Drawing (Curve)
+                // Canvas Drawing (الرسم)
                 ctx.clearRect(0, 0, width, height);
                 
-                let progressX = startX + (elapsed * 30); 
-                let progressY = startY - (Math.pow(elapsed, 2.5) * 15);
+                // حساب مكان الرمز بناءً على المضاعف (وليس الوقت)
+                let progressX = startX + ((currentMultiplier - 1) * 30); 
+                let progressY = startY - (Math.pow(currentMultiplier - 1, 1.8) * 10);
 
                 if (progressX > width - 50) progressX = width - 50;
                 if (progressY < 50) progressY = 50;
@@ -519,7 +552,7 @@
 
                 plane.style.left = progressX + 'px';
                 plane.style.top = progressY + 'px';
-                plane.style.transform = `rotate(-45deg)`;
+                plane.style.transform = `rotate(-45deg)`; // ميلان الرمز
 
                 animFrameId = requestAnimationFrame(gameLoop);
             }
@@ -541,13 +574,13 @@
             
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
             
-            // Mark user row as win immediately
             const row = document.getElementById("player-you");
             if(row) {
                 row.classList.add('win');
-                document.getElementById(`win-player-you`).innerText = "💎 " + winAmount.toFixed(2);
-                document.getElementById(`win-player-you`).className = 'player-win-amount';
-                document.getElementById(`win-player-you`).style.display = 'block';
+                const winEl = document.getElementById(`win-player-you`);
+                winEl.innerText = "💎 " + winAmount.toFixed(2);
+                winEl.className = 'player-win-amount';
+                winEl.style.display = 'block';
             }
         }
 
@@ -556,6 +589,7 @@
             cancelAnimationFrame(animFrameId);
             
             plane.classList.remove('flying');
+            body.classList.add('crash-flash'); // وميض أحمر للخلفية
             
             multDisplay.innerText = "CRASHED!";
             multDisplay.className = 'multiplier-display crashed';
@@ -570,21 +604,21 @@
 
             if (hasBet) {
                 hasBet = false;
-                // Mark user as lose
                 const row = document.getElementById("player-you");
                 if(row) {
                     row.classList.add('lose');
-                    document.getElementById(`win-player-you`).innerText = "Lost";
-                    document.getElementById(`win-player-you`).className = 'player-lose-amount';
-                    document.getElementById(`win-player-you`).style.display = 'block';
+                    const winEl = document.getElementById(`win-player-you`);
+                    winEl.innerText = "Lost";
+                    winEl.className = 'player-lose-amount';
+                    winEl.style.display = 'block';
                 }
             }
 
-            // Apply colors to all fake players based on whether they cashed out
+            // تلوين باقي اللاعبين
             setTimeout(() => {
-                const allRows = document.querySelectorAll('.player-row');
+                const allRows = document.querySelectorAll('.player-row:not(.user-row)');
                 allRows.forEach(row => {
-                    if (row.classList.contains('win') || row.classList.contains('lose')) return; // skip already processed
+                    if (row.classList.contains('win') || row.classList.contains('lose')) return; 
                     
                     const winEl = row.querySelector('.player-win-amount');
                     if (winEl && winEl.style.display === 'block') {
@@ -611,7 +645,21 @@
             if (historyBar.children.length > 15) historyBar.lastChild.remove();
         }
 
-        function addPlayerToList(name, avatar, bet, id) {
+        // إضافة اللاعب الأساسي (أنت) وتثبيته في الأعلى
+        function addUserPlayerToList(bet) {
+            const row = document.createElement('div');
+            row.className = 'player-row user-row';
+            row.id = 'player-you';
+            row.innerHTML = `
+                <div class="player-name"><span class="player-avatar">🧑‍💻</span> You</div>
+                <div class="player-bet">💎 ${bet.toFixed(2)}</div>
+                <div class="player-win-amount" id="win-player-you" style="display:none;"></div>
+            `;
+            playersList.prepend(row);
+        }
+
+        // إضافة اللاعبين الوهميين تحت اللاعب الأساسي
+        function addFakePlayerToList(name, avatar, bet, id) {
             const row = document.createElement('div');
             row.className = 'player-row';
             row.id = id;
@@ -620,7 +668,8 @@
                 <div class="player-bet">💎 ${bet.toFixed(2)}</div>
                 <div class="player-win-amount" id="win-${id}" style="display:none;"></div>
             `;
-            playersList.prepend(row);
+            // نستخدم appendChild لإضافتهم تحت اللاعب الأساسي
+            playersList.appendChild(row);
         }
 
         function updatePlayerInList(id, mult) {
@@ -630,15 +679,14 @@
             const winEl = document.getElementById(`win-${id}`);
             if(!winEl) return;
 
-            // Fake player cashed out
             winEl.style.display = 'block';
-            winEl.innerText = "💎 " + (mult * 10).toFixed(2); // fake calc
+            winEl.innerText = "💎 " + (mult * 10).toFixed(2);
             row.classList.add('win');
         }
 
         function spawnFakePlayers() {
-            const names = ["Nova", "Viper", "Ghost", "Blaze", "Falcon", "Titan", "Neo", "Ace", "Rogue", "Reaper"];
-            const avatars = ["🥷", "👽", "🤖", "🦁", "🐺", "🦊", "👻", "💀", "👑", "🔥"];
+            const names = ["Nova", "Viper", "Ghost", "Blaze", "Falcon", "Titan", "Neo", "Ace", "Rogue", "Reaper", "Zeus", "Onyx"];
+            const avatars = ["🥷", "👽", "🤖", "🦁", "🐺", "🦊", "👻", "💀", "👑", "🔥", "🐉", "🦅"];
             const colors = ["#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6", "#ec4899"];
             
             for(let i=0; i<5; i++) {
@@ -648,17 +696,18 @@
                 const bet = Math.random() * 100 + 10;
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 
-                addPlayerToList(name, avatar, bet, id);
+                addFakePlayerToList(name, avatar, bet, id);
                 
-                // Colorize name
                 const nameEl = document.querySelector(`#${id} .player-name`);
                 if(nameEl) nameEl.style.color = color;
 
                 const targetMult = Math.random() * crashPoint;
                 if (targetMult > 1.2) {
+                    // نستخدم رقم عشوائي لوقت السحب ليكون طبيعياً
+                    let cashoutTime = (targetMult / 2) * 1000; 
                     setTimeout(() => {
                         if (gameState === 'FLYING') updatePlayerInList(id, targetMult);
-                    }, (targetMult * 1000));
+                    }, cashoutTime);
                 }
             }
         }
