@@ -25,7 +25,6 @@
             flex-direction: column;
             height: 100%;
             padding: 15px;
-            overflow-y: auto;
             padding-bottom: 80px;
         }
         
@@ -44,30 +43,33 @@
             border-radius: 10px; font-weight: 600; font-size: 14px;
         }
 
-        .live-bar { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; }
-        .live-bar::-webkit-scrollbar { display: none; }
-        .live-item { min-width: 60px; height: 80px; border-radius: 12px; background: #1e1f26; border: 1px solid #333; display: flex; justify-content: center; align-items: center; font-size: 24px; }
-        .live-item.green { border-color: #10b981; }
+        .lobby-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         .game-card {
-            border-radius: 20px; padding: 20px; margin-bottom: 15px;
-            display: flex; flex-direction: column; justify-content: center;
+            border-radius: 25px; padding: 20px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             position: relative; overflow: hidden; cursor: pointer;
+            width: 100%; max-width: 350px; height: 250px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+            transition: transform 0.2s;
         }
-        .game-card.rocket { background: linear-gradient(135deg, #0ea5e9, #2563eb); height: 120px; }
-        .game-card.pvp { background: linear-gradient(135deg, #f59e0b, #ea580c); height: 100px; }
-        .game-card.hub { background: linear-gradient(135deg, #7c3aed, #4c1d95); height: 100px; }
+        .game-card:active { transform: scale(0.95); }
         
-        .card-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; z-index: 2; }
-        .card-badge { background: white; color: black; font-size: 10px; padding: 3px 8px; border-radius: 10px; position: absolute; top: 15px; left: 15px; font-weight: bold; }
-        .card-badge.hot { color: #ea580c; }
+        .card-title { font-size: 36px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 2; }
+        .card-badge { background: white; color: #ea580c; font-size: 12px; padding: 5px 12px; border-radius: 15px; font-weight: bold; position: absolute; top: 20px; left: 20px; }
 
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             display: flex; justify-content: space-around; padding: 15px 10px;
             background: #14151a; border-top: 1px solid #222; z-index: 50;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; color: #666; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; color: #666; }
         .nav-item.active { color: white; }
         .nav-icon { font-size: 20px; }
 
@@ -80,14 +82,13 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; background: #14151a; z-index: 10;
         }
-        .back-btn { background: #1e1f26; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .back-btn { background: #1e1f26; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; display: flex; align-items: center; gap: 5px; cursor: pointer; }
         
         .game-area {
             flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
             position: relative; overflow: hidden;
         }
 
-        /* تأثيرات الدائرة */
         .circle-wrap { position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; }
         .circle-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
         .circle-bg { fill: none; stroke: #222; stroke-width: 4; }
@@ -97,11 +98,9 @@
         .multiplier-text.crashed { color: #ef4444; font-size: 36px; }
         .multiplier-text.countdown { color: #3b82f6; font-size: 72px; }
 
-        /* الطائرة */
         .plane { position: absolute; font-size: 40px; opacity: 0; transition: transform 0.1s linear, opacity 0.3s; z-index: 1; }
         .plane.flying { opacity: 1; }
 
-        /* سجل المضاعفات */
         .history-container { display: flex; gap: 8px; margin-top: 30px; padding: 0 15px; overflow-x: auto; width: 100%; justify-content: center; }
         .history-container::-webkit-scrollbar { display: none; }
         .hist-badge { padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; background: #1e1f26; border: 1px solid #333; }
@@ -109,7 +108,6 @@
         .hist-badge.green { border-color: #10b981; color: #10b981; }
         .hist-badge.blue { border-color: #3b82f6; color: #3b82f6; }
 
-        /* منطقة الأزرار */
         .action-area { padding: 15px; background: #14151a; z-index: 10; }
         .place-bet-btn {
             width: 100%; padding: 18px; border: none; border-radius: 15px;
@@ -122,7 +120,6 @@
         .place-bet-btn.cashout { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         .place-bet-btn:disabled { background: #2a2b36; color: #666; box-shadow: none; }
 
-        /* قائمة اللاعبين */
         .players-list { padding: 10px 15px; background: #14151a; height: 200px; overflow-y: auto; border-top: 1px solid #222; }
         .player-row { display: flex; justify-content: space-between; align-items: center; background: #1e1f26; padding: 10px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #2a2b36; }
         .player-row.win { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
@@ -133,7 +130,6 @@
         .player-win { font-size: 14px; font-weight: 700; color: #10b981; }
         .player-mult { font-size: 12px; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 2px 6px; border-radius: 5px; }
 
-        /* النافذة المنبثقة (Modal) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: flex-end; z-index: 100; }
         .modal-content { background: #1e1f26; width: 100%; border-top-left-radius: 25px; border-top-right-radius: 25px; padding: 20px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .modal-content.show { transform: translateY(0); }
@@ -141,7 +137,7 @@
         .bet-input-wrap { display: flex; gap: 10px; margin-bottom: 20px; }
         .bet-input { flex: 1; background: #0d0e12; border: 1px solid #333; color: white; font-size: 24px; text-align: center; padding: 15px; border-radius: 12px; outline: none; font-weight: bold; }
         .quick-btns { display: flex; gap: 10px; margin-bottom: 20px; }
-        .quick-btn { flex: 1; background: #2a2b36; border: none; color: white; padding: 10px; border-radius: 10px; font-weight: bold; }
+        .quick-btn { flex: 1; background: #2a2b36; border: none; color: white; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .modal-actions { display: flex; gap: 10px; }
         .modal-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-cancel { background: #2a2b36; color: white; }
@@ -164,27 +160,15 @@
             <button class="deposit-btn">Deposit</button>
         </div>
 
-        <div style="font-size: 12px; color: #888; margin-bottom: 10px;">Live</div>
-        <div class="live-bar">
-            <div class="live-item" style="background: #6d28d9;">🪝</div>
-            <div class="live-item" style="background: #b45309;">🎁</div>
-            <div class="live-item green">💎</div>
-            <div class="live-item">🚀</div>
-            <div class="live-item green">💎</div>
-        </div>
-
-        <div class="game-card rocket" onclick="openGame()">
-            <div class="card-badge hot">🔥 HOT</div>
-            <div class="card-title">🚀 ROCKET</div>
-        </div>
-
-        <div class="game-card pvp">
-            <div class="card-badge">⚡ NEW</div>
-            <div class="card-title">⚔️ PVP HUB</div>
-        </div>
-
-        <div class="game-card hub">
-            <div class="card-title">🎮 PLAY HUB</div>
+        <div class="lobby-content">
+            <!-- الزر الذي يفتح اللعبة -->
+            <div class="game-card" id="open-game-btn">
+                <div class="card-badge">🔥 HOT</div>
+                <div class="card-title">
+                    <span>🚀</span>
+                    <span>ROCKET</span>
+                </div>
+            </div>
         </div>
 
         <div class="bottom-nav">
@@ -199,10 +183,10 @@
     <!-- ==================== شاشة اللعبة ==================== -->
     <div id="game-screen">
         <div class="game-header">
-            <button class="back-btn" onclick="closeGame()">← Back</button>
+            <button class="back-btn" id="back-btn">← Back</button>
             <div style="font-weight: bold; background: #1e1f26; padding: 8px 15px; border-radius: 20px;">🎁 Epic Gift</div>
             <div style="background: #1e1f26; padding: 8px 15px; border-radius: 20px; color: #3b82f6; font-weight: bold;">
-                💎 <span id="game-balance">1000.00</span> +
+                💎 <span id="game-balance">1000.00</span>
             </div>
         </div>
 
@@ -217,19 +201,14 @@
                 <div class="multiplier-text" id="multiplier-text">1.00x</div>
             </div>
 
-            <div class="history-container" id="history-container">
-                <!-- سيتم إضافة النتائج هنا -->
-            </div>
+            <div class="history-container" id="history-container"></div>
         </div>
 
         <div class="action-area">
-            <button class="place-bet-btn" id="action-btn" onclick="handleAction()">Place bet</button>
+            <button class="place-bet-btn" id="action-btn">Place bet</button>
         </div>
 
-        <!-- قائمة اللاعبين -->
-        <div class="players-list" id="players-list">
-            <!-- سيتم إضافة اللاعبين الوهميين هنا -->
-        </div>
+        <div class="players-list" id="players-list"></div>
     </div>
 
     <!-- نافذة الرهان -->
@@ -246,8 +225,8 @@
                 <button class="quick-btn" onclick="setBet(10000)">MAX</button>
             </div>
             <div class="modal-actions">
-                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
-                <button class="modal-btn btn-confirm" onclick="confirmBet()">Start</button>
+                <button class="modal-btn btn-cancel" id="cancel-bet-btn">Cancel</button>
+                <button class="modal-btn btn-confirm" id="confirm-bet-btn">Start</button>
             </div>
         </div>
     </div>
@@ -262,7 +241,7 @@
         let balance = 1000.00;
         let currentBet = 0;
         let hasBetThisRound = false;
-        let gameState = 'WAITING'; // WAITING, COUNTDOWN, FLYING, CRASHED
+        let gameState = 'WAITING'; 
         let currentMultiplier = 1.00;
         let targetCrashPoint = 1.00;
         let countdownTimer = null;
@@ -281,16 +260,23 @@
         const modalContent = document.getElementById('modal-content');
         const betInput = document.getElementById('bet-input');
 
-        // بيانات وهمية للاعبين
         const fakeNames = ["DON", "O t h m a n", "|| sand...", "square ...", "Nacky", "10'", "مصطفى", "Alex", "CryptoKing", "LuckyBoi"];
         const fakeAvatars = ["👨‍🦲", "🧔", "👩", "😈", "🥷", "👽", "🤖", "🦁", "🐺", "🦊"];
+
+        // --- ربط الأزرار (حل مشكلة عدم استجابة الزر) ---
+        document.getElementById('open-game-btn').addEventListener('click', openGame);
+        document.getElementById('back-btn').addEventListener('click', closeGame);
+        actionBtn.addEventListener('click', handleAction);
+        
+        document.getElementById('cancel-bet-btn').addEventListener('click', closeModal);
+        document.getElementById('confirm-bet-btn').addEventListener('click', confirmBet);
 
         // --- التنقل بين الشاشات ---
         function openGame() {
             lobbyScreen.style.display = 'none';
             gameScreen.style.display = 'flex';
             updateUI();
-            startNewRound(); // بدء اللعبة فور الدخول
+            startNewRound();
         }
 
         function closeGame() {
@@ -298,6 +284,7 @@
             lobbyScreen.style.display = 'flex';
             clearInterval(gameInterval);
             clearInterval(countdownTimer);
+            gameState = 'WAITING';
         }
 
         function updateUI() {
@@ -338,12 +325,10 @@
             updateUI();
             hasBetThisRound = true;
             
-            // تغيير الزر
             actionBtn.innerText = "Waiting for next round...";
             actionBtn.disabled = true;
             actionBtn.classList.remove('cashout');
             
-            // إضافة اللاعب للقائمة
             addPlayerToList("You", "🧑‍💻", currentBet, null, false);
         }
 
@@ -363,7 +348,6 @@
             actionBtn.disabled = false;
             actionBtn.classList.remove('cashout');
             
-            // الانتظار 5 ثواني قبل بدء العد التنازلي للسماح بوضع الرهانات
             setTimeout(() => {
                 if (gameScreen.style.display === 'flex') {
                     startCountdown();
@@ -375,10 +359,6 @@
             gameState = 'COUNTDOWN';
             let timeLeft = 10;
             
-            if (!hasBetThisRound) {
-                actionBtn.innerText = "Place bet";
-            }
-
             multText.innerText = timeLeft;
             multText.className = "multiplier-text countdown";
             multText.style.fontSize = "72px";
@@ -387,7 +367,6 @@
                 timeLeft--;
                 if (timeLeft > 0) {
                     multText.innerText = timeLeft;
-                    // تحريك الدائرة
                     progressCircle.style.strokeDashoffset = 628 - (timeLeft / 10) * 628;
                 } else {
                     clearInterval(countdownTimer);
@@ -400,12 +379,10 @@
             gameState = 'FLYING';
             currentMultiplier = 1.00;
             
-            // تحديد نقطة الانفجار مسبقاً (بشكل عشوائي بين 1 و 100)
-            // نجعل الانفجار المبكر أكثر احتمالاً لتكون اللعبة واقعية
             const r = Math.random();
-            if (r < 0.5) { targetCrashPoint = 1.00 + (Math.random() * 0.9); } // 50% chance to crash before 2x
-            else if (r < 0.8) { targetCrashPoint = 2.00 + (Math.random() * 3.0); } // 30% chance to crash between 2x and 5x
-            else { targetCrashPoint = 5.00 + (Math.random() * 95.0); } // 20% chance to go above 5x
+            if (r < 0.5) { targetCrashPoint = 1.00 + (Math.random() * 0.9); } 
+            else if (r < 0.8) { targetCrashPoint = 2.00 + (Math.random() * 3.0); } 
+            else { targetCrashPoint = 5.00 + (Math.random() * 95.0); } 
 
             multText.className = "multiplier-text";
             multText.style.fontSize = "56px";
@@ -420,9 +397,46 @@
                 actionBtn.classList.add('cashout');
             }
 
-            // إضافة لاعبين وهميين للقائمة عند بدء الطيران
             addFakePlayers();
 
-            let speed = 50; // كلما قل الرقم زادت سرعة اللعبة
+            let speed = 50;
             gameInterval = setInterval(() => {
-                // زيادة المضاعف
+                let increment = 0.01 + (currentMultiplier * 0.001);
+                currentMultiplier += increment;
+                
+                multText.innerText = currentMultiplier.toFixed(2) + 'x';
+
+                let x = (Math.random() - 0.5) * 5;
+                let y = (Math.random() - 0.5) * 5;
+                plane.style.transform = `translate(${x}px, ${y}px) scale(${1 + currentMultiplier/50})`;
+
+                if (currentMultiplier >= targetCrashPoint) {
+                    triggerCrash();
+                }
+            }, speed);
+        }
+
+        function cashOut() {
+            if (!hasBetThisRound) return;
+            
+            hasBetThisRound = false;
+            const winAmount = currentBet * currentMultiplier;
+            balance += winAmount;
+            updateUI();
+
+            actionBtn.innerText = `Won ${winAmount.toFixed(2)} 💎`;
+            actionBtn.disabled = true;
+            actionBtn.classList.remove('cashout');
+            
+            tg.HapticFeedback.notificationOccurred('success');
+            updatePlayerInList("You", currentMultiplier);
+        }
+
+        function triggerCrash() {
+            clearInterval(gameInterval);
+            gameState = 'CRASHED';
+            
+            multText.innerText = "CRASHED!";
+            multText.classList.add('crashed');
+            plane.style.opacity = 0;
+            plane.c
