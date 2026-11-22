@@ -161,8 +161,8 @@
         </div>
 
         <div class="lobby-content">
-            <!-- الزر الذي يفتح اللعبة -->
-            <div class="game-card" id="open-game-btn">
+            <!-- الزر الذي يفتح اللعبة (تم استخدام onclick لضمان عمله) -->
+            <div class="game-card" onclick="openGame()">
                 <div class="card-badge">🔥 HOT</div>
                 <div class="card-title">
                     <span>🚀</span>
@@ -183,7 +183,7 @@
     <!-- ==================== شاشة اللعبة ==================== -->
     <div id="game-screen">
         <div class="game-header">
-            <button class="back-btn" id="back-btn">← Back</button>
+            <button class="back-btn" onclick="closeGame()">← Back</button>
             <div style="font-weight: bold; background: #1e1f26; padding: 8px 15px; border-radius: 20px;">🎁 Epic Gift</div>
             <div style="background: #1e1f26; padding: 8px 15px; border-radius: 20px; color: #3b82f6; font-weight: bold;">
                 💎 <span id="game-balance">1000.00</span>
@@ -205,7 +205,7 @@
         </div>
 
         <div class="action-area">
-            <button class="place-bet-btn" id="action-btn">Place bet</button>
+            <button class="place-bet-btn" id="action-btn" onclick="handleAction()">Place bet</button>
         </div>
 
         <div class="players-list" id="players-list"></div>
@@ -225,18 +225,13 @@
                 <button class="quick-btn" onclick="setBet(10000)">MAX</button>
             </div>
             <div class="modal-actions">
-                <button class="modal-btn btn-cancel" id="cancel-bet-btn">Cancel</button>
-                <button class="modal-btn btn-confirm" id="confirm-bet-btn">Start</button>
+                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-confirm" onclick="confirmBet()">Start</button>
             </div>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.setHeaderColor('#0d0e12');
-        tg.setBackgroundColor('#0d0e12');
-
         // --- المتغيرات الأساسية ---
         let balance = 1000.00;
         let currentBet = 0;
@@ -262,14 +257,6 @@
 
         const fakeNames = ["DON", "O t h m a n", "|| sand...", "square ...", "Nacky", "10'", "مصطفى", "Alex", "CryptoKing", "LuckyBoi"];
         const fakeAvatars = ["👨‍🦲", "🧔", "👩", "😈", "🥷", "👽", "🤖", "🦁", "🐺", "🦊"];
-
-        // --- ربط الأزرار (حل مشكلة عدم استجابة الزر) ---
-        document.getElementById('open-game-btn').addEventListener('click', openGame);
-        document.getElementById('back-btn').addEventListener('click', closeGame);
-        actionBtn.addEventListener('click', handleAction);
-        
-        document.getElementById('cancel-bet-btn').addEventListener('click', closeModal);
-        document.getElementById('confirm-bet-btn').addEventListener('click', confirmBet);
 
         // --- التنقل بين الشاشات ---
         function openGame() {
@@ -428,7 +415,6 @@
             actionBtn.disabled = true;
             actionBtn.classList.remove('cashout');
             
-            tg.HapticFeedback.notificationOccurred('success');
             updatePlayerInList("You", currentMultiplier);
         }
 
@@ -439,4 +425,25 @@
             multText.innerText = "CRASHED!";
             multText.classList.add('crashed');
             plane.style.opacity = 0;
-            plane.c
+            plane.classList.remove('flying');
+            
+            actionBtn.innerText = "Place bet";
+            actionBtn.disabled = true;
+            actionBtn.classList.remove('cashout');
+
+            addToHistory(targetCrashPoint);
+
+            if (hasBetThisRound) {
+                hasBetThisRound = false;
+                updatePlayerInList("You", 0);
+            }
+
+            setTimeout(() => {
+                playersList.innerHTML = '';
+                startNewRound();
+            }, 3000);
+        }
+
+        // --- إدارة السجل واللاعبين ---
+        function addToHistory(multiplier) {
+            const badge =
