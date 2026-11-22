@@ -19,7 +19,7 @@
             overflow: hidden; 
         }
 
-        /* ==================== LOBBY SCREEN ==================== */
+        /* ==================== 1. LOBBY SCREEN ==================== */
         #lobby-screen {
             display: flex; flex-direction: column; height: 100%; padding: 15px; padding-bottom: 80px;
             background: linear-gradient(180deg, #1a1b26 0%, #0d0e12 100%);
@@ -28,11 +28,11 @@
         .profile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .user-info { display: flex; align-items: center; gap: 12px; }
         .avatar { width: 45px; height: 45px; border-radius: 50%; background: #333; border: 2px solid #8b5cf6; object-fit: cover; }
-        .user-name { font-size: 14px; color: #888; }
-        .user-balance { font-size: 20px; font-weight: 800; color: white; display: flex; align-items: center; gap: 5px; }
+        .user-name { font-size: 14px; color: #888; font-weight: 600; }
+        .user-balance { font-size: 20px; font-weight: 900; color: white; display: flex; align-items: center; gap: 5px; }
         .deposit-btn {
             background: #8b5cf6; color: white; border: none; padding: 10px 15px;
-            border-radius: 12px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            border-radius: 12px; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         }
 
         .lobby-content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
@@ -47,17 +47,16 @@
         
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); }
-            100% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.8); }
+            100% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.9); }
         }
 
-        .card-badge { background: white; color: #ea580c; font-size: 12px; padding: 5px 12px; border-radius: 15px; font-weight: 800; position: absolute; top: 15px; left: 15px; }
+        .card-badge { background: white; color: #ea580c; font-size: 12px; padding: 5px 12px; border-radius: 15px; font-weight: 900; position: absolute; top: 15px; left: 15px; }
         .card-title { font-size: 40px; font-weight: 900; display: flex; flex-direction: column; align-items: center; gap: 5px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         
-        /* Rocket Animation in Lobby */
         .rocket-icon { animation: float 2s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(-45deg); } 50% { transform: translateY(-10px) rotate(-45deg); } }
 
-        /* ==================== GAME SCREEN ==================== */
+        /* ==================== 2. GAME SCREEN ==================== */
         #game-screen {
             display: none; flex-direction: column; height: 100%; position: relative; background: #14151a;
         }
@@ -66,11 +65,10 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px; background: #1e1f26; z-index: 10; border-bottom: 1px solid #2a2b36;
         }
-        .back-btn { background: #2a2b36; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        .game-title { font-weight: 800; font-size: 16px; background: #2a2b36; padding: 8px 15px; border-radius: 20px; }
-        .balance-box { background: #2a2b36; padding: 8px 15px; border-radius: 20px; color: #3b82f6; font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+        .back-btn { background: #2a2b36; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .game-title { font-weight: 900; font-size: 16px; background: #2a2b36; padding: 8px 15px; border-radius: 20px; }
+        .balance-box { background: #2a2b36; padding: 8px 15px; border-radius: 20px; color: #3b82f6; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 5px; }
 
-        /* Canvas Area */
         .game-area {
             flex: 1; position: relative; display: flex; flex-direction: column;
             justify-content: center; align-items: center; overflow: hidden;
@@ -79,114 +77,130 @@
 
         #game-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
-        /* The Plane */
         .plane {
             position: absolute; font-size: 45px; z-index: 3; opacity: 0; transition: opacity 0.2s;
-            transform-origin: center; filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8));
+            transform-origin: center; filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.9));
         }
         .plane.flying { opacity: 1; }
 
-        /* Multiplier */
         .multiplier-display {
-            z-index: 2; font-size: 80px; font-weight: 900; color: white;
-            text-shadow: 0 0 25px rgba(255,255,255,0.3); position: absolute;
+            z-index: 2; font-size: 85px; font-weight: 900; color: white;
+            text-shadow: 0 0 30px rgba(255,255,255,0.4); position: absolute;
             transition: transform 0.1s, color 0.3s;
         }
-        .multiplier-display.crashed { color: #ef4444; font-size: 50px; text-shadow: 0 0 35px rgba(239, 68, 68, 0.8); animation: shake 0.5s; }
-        .multiplier-display.waiting { font-size: 40px; color: #888; }
+        .multiplier-display.crashed { color: #ef4444; font-size: 55px; text-shadow: 0 0 40px rgba(239, 68, 68, 1); animation: shake 0.5s; }
+        .multiplier-display.waiting { font-size: 50px; color: #888; animation: pulse 1s infinite alternate;}
         
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
+            20% { transform: translateX(-15px) rotate(-5deg); }
+            40% { transform: translateX(15px) rotate(5deg); }
+            60% { transform: translateX(-15px) rotate(-5deg); }
+            80% { transform: translateX(15px) rotate(5deg); }
         }
 
-        /* History */
         .history-bar {
             display: flex; gap: 8px; padding: 10px 15px; background: #14151a;
             overflow-x: auto; white-space: nowrap; position: absolute; top: 10px; width: 100%; z-index: 4;
         }
         .history-bar::-webkit-scrollbar { display: none; }
         .hist-item { 
-            padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 800; 
-            background: #1e1f26; border: 1px solid #333;
+            padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 900; 
+            background: #1e1f26; border: 1px solid #333; animation: slideDown 0.3s ease;
         }
-        .hist-red { color: #ef4444; border-color: rgba(239, 68, 68, 0.4); }
-        .hist-green { color: #10b981; border-color: rgba(16, 185, 129, 0.4); }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .hist-red { color: #ef4444; border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 0 10px rgba(239,68,68,0.2); }
+        .hist-green { color: #10b981; border-color: rgba(16, 185, 129, 0.4); box-shadow: 0 0 10px rgba(16,185,129,0.2); }
 
         /* Players List */
         .players-list {
             position: absolute; bottom: 10px; left: 10px; right: 10px;
-            height: 180px; overflow-y: auto; z-index: 5;
+            height: 200px; overflow-y: auto; z-index: 5;
             display: flex; flex-direction: column; gap: 6px;
-            background: rgba(20, 21, 26, 0.85); backdrop-filter: blur(8px);
+            background: rgba(20, 21, 26, 0.85); backdrop-filter: blur(10px);
             border-radius: 15px; padding: 10px; border: 1px solid #2a2b36;
         }
         .players-list::-webkit-scrollbar { display: none; }
+        
         .player-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1e1f26; padding: 8px 12px; border-radius: 10px; font-size: 13px;
-            border: 1px solid transparent;
+            background: #1e1f26; padding: 10px 15px; border-radius: 12px; font-size: 15px;
+            border-left: 4px solid transparent; transition: all 0.3s ease;
+            animation: slideIn 0.3s ease forwards;
         }
-        .player-row.win { border-color: rgba(16, 185, 129, 0.5); background: rgba(16, 185, 129, 0.1); }
-        .player-name { font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .player-bet { color: #888; font-size: 12px; display: flex; align-items: center; gap: 3px;}
-        .player-win { color: #10b981; font-weight: 900; }
+        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Win / Lose Colors */
+        .player-row.win { 
+            border-left-color: #10b981; 
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.2) 0%, #1e1f26 100%); 
+            box-shadow: inset 0 0 15px rgba(16, 185, 129, 0.1);
+        }
+        .player-row.lose { 
+            border-left-color: #ef4444; 
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.2) 0%, #1e1f26 100%); 
+            opacity: 0.8;
+        }
+
+        .player-name { font-weight: 900; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+        .player-avatar { font-size: 18px; background: #2a2b36; padding: 4px; border-radius: 50%; }
+        .player-bet { color: #888; font-size: 13px; display: flex; align-items: center; gap: 3px; font-weight: 700;}
+        .player-win-amount { color: #10b981; font-weight: 900; font-size: 16px; text-shadow: 0 0 10px rgba(16,185,129,0.5);}
+        .player-lose-amount { color: #ef4444; font-weight: 900; font-size: 14px;}
 
         /* Action Area */
         .action-area {
-            padding: 15px 20px; background: #1e1f26; border-top: 1px solid #2a2b36;
-            z-index: 10;
+            padding: 15px 20px; background: #1e1f26; border-top: 1px solid #2a2b36; z-index: 10;
         }
         
         .main-btn {
             width: 100%; padding: 18px; border: none; border-radius: 15px;
-            font-size: 22px; font-weight: 900; color: white; cursor: pointer;
+            font-size: 24px; font-weight: 900; color: white; cursor: pointer;
             background: linear-gradient(180deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 5px 0 #047857, 0 10px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 6px 0 #047857, 0 10px 20px rgba(16, 185, 129, 0.3);
             transition: all 0.1s; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .main-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #047857, 0 5px 10px rgba(16, 185, 129, 0.3); }
+        .main-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #047857, 0 5px 10px rgba(16, 185, 129, 0.3); }
         
-        .main-btn.bet { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 5px 0 #b45309, 0 10px 20px rgba(245, 158, 11, 0.3); }
+        .main-btn.bet { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(245, 158, 11, 0.3); }
         .main-btn.bet:active { box-shadow: 0 0 0 #b45309, 0 5px 10px rgba(245, 158, 11, 0.3); }
         
-        .main-btn.cashout { background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 5px 0 #b91c1c, 0 10px 20px rgba(239, 68, 68, 0.3); }
+        .main-btn.cashout { background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #b91c1c, 0 10px 20px rgba(239, 68, 68, 0.3); animation: pulse-cashout 1s infinite alternate;}
         .main-btn.cashout:active { box-shadow: 0 0 0 #b91c1c, 0 5px 10px rgba(239, 68, 68, 0.3); }
+        @keyframes pulse-cashout { 0% { filter: brightness(1); } 100% { filter: brightness(1.2); } }
         
-        .main-btn:disabled { background: #2a2b36; box-shadow: none; color: #666; transform: translateY(0); }
+        .main-btn:disabled { background: #2a2b36; box-shadow: none; color: #666; transform: translateY(0); animation: none; }
 
-        .btn-sub { font-size: 14px; font-weight: 700; opacity: 0.9; margin-top: 4px; background: rgba(0,0,0,0.2); padding: 2px 10px; border-radius: 10px;}
+        .btn-sub { font-size: 15px; font-weight: 800; opacity: 0.9; margin-top: 5px; background: rgba(0,0,0,0.2); padding: 3px 12px; border-radius: 10px;}
 
-        /* Modal */
+        /* Modal & Bottom Nav remain same */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
         .modal-content { background: #1e1f26; width: 100%; border-top-left-radius: 25px; border-top-right-radius: 25px; padding: 25px; text-align: center; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .modal-content.show { transform: translateY(0); }
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+        .modal-title { font-size: 22px; font-weight: 900; margin-bottom: 20px; }
         .input-group { display: flex; background: #14151a; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 2px solid #2a2b36; }
-        .input-group input { flex: 1; background: none; border: none; color: white; font-size: 28px; padding: 15px; text-align: center; font-weight: 900; outline: none; }
+        .input-group input { flex: 1; background: none; border: none; color: white; font-size: 30px; padding: 15px; text-align: center; font-weight: 900; outline: none; }
         .quick-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px; }
-        .quick-btn { background: #2a2b36; border: none; color: white; padding: 12px 0; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .quick-btn { background: #2a2b36; border: none; color: white; padding: 12px 0; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; }
         .modal-actions { display: flex; gap: 10px; }
-        .modal-btn { flex: 1; padding: 18px; border-radius: 15px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; }
+        .modal-btn { flex: 1; padding: 18px; border-radius: 15px; font-size: 16px; font-weight: 900; border: none; cursor: pointer; }
         .btn-cancel { background: #2a2b36; color: white; }
         .btn-confirm { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
 
-        /* Bottom Nav */
         .bottom-nav {
             position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 12px 0 20px 0;
-            background: #14151a; border-top: 1px solid #2a2b36; font-size: 10px; color: #555; font-weight: 600; z-index: 10;
+            background: #14151a; border-top: 1px solid #2a2b36; font-size: 11px; color: #555; font-weight: 700; z-index: 10;
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-item.active { color: #8b5cf6; }
-        .nav-icon { font-size: 20px; }
+        .nav-item.active { color: #8b5cf6; text-shadow: 0 0 10px rgba(139, 92, 246, 0.5); }
+        .nav-icon { font-size: 22px; }
 
     </style>
 </head>
 <body>
 
-    <!-- ==================== 1. LOBBY SCREEN ==================== -->
+    <!-- LOBBY SCREEN -->
     <div id="lobby-screen">
         <div class="profile-header">
             <div class="user-info">
@@ -200,7 +214,6 @@
         </div>
 
         <div class="lobby-content">
-            <!-- Game Button -->
             <div class="game-card" onclick="openGame()">
                 <div class="card-badge">🔥 HOT</div>
                 <div class="card-title">
@@ -210,7 +223,6 @@
             </div>
         </div>
 
-        <!-- Bottom Nav for Lobby -->
         <div class="bottom-nav">
             <div class="nav-item"><div class="nav-icon">📦</div>Backpack</div>
             <div class="nav-item"><div class="nav-icon">👥</div>Invite</div>
@@ -220,7 +232,7 @@
         </div>
     </div>
 
-    <!-- ==================== 2. GAME SCREEN ==================== -->
+    <!-- GAME SCREEN -->
     <div id="game-screen">
         <div class="game-header">
             <button class="back-btn" onclick="closeGame()">← Back</button>
@@ -239,9 +251,7 @@
             
             <div class="multiplier-display waiting" id="multiplier-display">Waiting...</div>
 
-            <div class="players-list" id="players-list">
-                <!-- Players appear here -->
-            </div>
+            <div class="players-list" id="players-list"></div>
         </div>
 
         <div class="action-area">
@@ -252,7 +262,7 @@
         </div>
     </div>
 
-    <!-- ==================== 3. BET MODAL ==================== -->
+    <!-- BET MODAL -->
     <div class="modal" id="bet-modal">
         <div class="modal-content" id="modal-content">
             <div class="modal-title">Place Your Bet</div>
@@ -273,30 +283,25 @@
     </div>
 
     <script>
-        // --- 1. Telegram Integration (User Data) ---
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.setHeaderColor('#14151a');
         tg.setBackgroundColor('#0d0e12');
 
-        // Get real user data from Telegram (or fallback)
-        const user = tg.initDataUnsafe?.user || { first_name: 'Guest', username: 'guest_user', photo_url: 'https://i.pravatar.cc/100?img=11' };
-        
-        document.getElementById('user-name').innerText = user.first_name || user.username || 'Player';
+        const user = tg.initDataUnsafe?.user || { first_name: 'Player', username: 'player', photo_url: 'https://i.pravatar.cc/100?img=11' };
+        document.getElementById('user-name').innerText = user.first_name || user.username;
         document.getElementById('user-avatar').src = user.photo_url || 'https://i.pravatar.cc/100?img=11';
 
-        // --- 2. Game State & Variables ---
         let balance = 1000.00;
         let currentBet = 10.00;
         let hasBet = false;
         let gameState = 'WAITING'; 
         let currentMultiplier = 1.00;
         let crashPoint = 1.00;
-        
         let countdownInterval = null;
         let animFrameId = null;
-
-        // Canvas
+        
+        // Canvas Elements
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = canvas.offsetWidth;
@@ -324,7 +329,6 @@
             startY = height - 40;
         });
 
-        // --- 3. Navigation ---
         function openGame() {
             document.getElementById('lobby-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'flex';
@@ -340,7 +344,6 @@
             gameState = 'WAITING';
         }
 
-        // --- 4. Core Logic ---
         function updateBalanceUI() {
             let b = balance.toFixed(2);
             lobbyBalance.innerText = b;
@@ -412,7 +415,7 @@
 
         function startCountdown() {
             gameState = 'COUNTDOWN';
-            let time = 10; // 10 seconds countdown as requested
+            let time = 5; // 5 seconds is enough, 10 was too long
             
             multDisplay.className = 'multiplier-display waiting';
             multDisplay.innerText = time;
@@ -426,8 +429,7 @@
                 time--;
                 if (time > 0) {
                     multDisplay.innerText = time;
-                    multDisplay.style.animation = 'none';
-                    setTimeout(() => multDisplay.style.animation = 'shake 0.1s', 10); // Micro animation
+                    if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 } else {
                     clearInterval(countdownInterval);
                     startFlight();
@@ -456,22 +458,22 @@
 
             spawnFakePlayers();
 
-            // Randomize Crash Point (Before flight starts)
             const rand = Math.random();
-            if (rand < 0.5) crashPoint = 1.00 + (Math.random() * 0.9); // 50% chance < 1.90x
-            else if (rand < 0.8) crashPoint = 2.00 + (Math.random() * 3.0); // 30% chance 2x-5x
-            else crashPoint = 5.00 + (Math.random() * 95.0); // 20% chance > 5x
+            if (rand < 0.5) crashPoint = 1.10 + (Math.random() * 0.9); 
+            else if (rand < 0.8) crashPoint = 2.00 + (Math.random() * 3.0); 
+            else crashPoint = 5.00 + (Math.random() * 95.0); 
 
             let startTime = performance.now();
-            let speed = 0.00006;
-
+            
             function gameLoop(time) {
                 if (gameState !== 'FLYING') return;
-                const elapsed = time - startTime;
+                const elapsed = (time - startTime) / 1000; // in seconds
                 
-                currentMultiplier = Math.pow(Math.E, speed * elapsed * 10);
-                currentMultiplier = Math.max(1.00, currentMultiplier);
-
+                // --- NEW PHYSICS FORMULA ---
+                // Starts very slow, then accelerates exponentially
+                // At t=1s -> ~1.1x, t=2s -> ~1.5x, t=3s -> ~2.3x, t=5s -> ~6x
+                currentMultiplier = 1 + (Math.pow(elapsed, 2.5) * 0.4);
+                
                 if (currentMultiplier >= crashPoint) {
                     crash();
                     return;
@@ -482,16 +484,15 @@
                     btnSubText.innerText = `💎 ${(currentBet * currentMultiplier).toFixed(2)}`;
                 }
 
-                // Canvas Drawing
+                // Canvas Drawing (Curve)
                 ctx.clearRect(0, 0, width, height);
                 
-                let progressX = startX + (elapsed * 0.15); 
-                let progressY = startY - (Math.pow(elapsed, 1.4) * 0.005);
+                let progressX = startX + (elapsed * 30); 
+                let progressY = startY - (Math.pow(elapsed, 2.5) * 15);
 
                 if (progressX > width - 50) progressX = width - 50;
                 if (progressY < 50) progressY = 50;
 
-                // Gradient fill
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(progressX, progressY);
@@ -505,7 +506,6 @@
                 ctx.fillStyle = gradient;
                 ctx.fill();
 
-                // Red Line
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(progressX, progressY);
@@ -515,9 +515,8 @@
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = '#ef4444';
                 ctx.stroke();
-                ctx.shadowBlur = 0; // Reset for next frame
+                ctx.shadowBlur = 0;
 
-                // Move Plane
                 plane.style.left = progressX + 'px';
                 plane.style.top = progressY + 'px';
                 plane.style.transform = `rotate(-45deg)`;
@@ -541,7 +540,15 @@
             btnSubText.innerText = `+💎 ${winAmount.toFixed(2)}`;
             
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-            updatePlayerInList("player-you", currentMultiplier);
+            
+            // Mark user row as win immediately
+            const row = document.getElementById("player-you");
+            if(row) {
+                row.classList.add('win');
+                document.getElementById(`win-player-you`).innerText = "💎 " + winAmount.toFixed(2);
+                document.getElementById(`win-player-you`).className = 'player-win-amount';
+                document.getElementById(`win-player-you`).style.display = 'block';
+            }
         }
 
         function crash() {
@@ -563,13 +570,39 @@
 
             if (hasBet) {
                 hasBet = false;
-                updatePlayerInList("player-you", 0);
+                // Mark user as lose
+                const row = document.getElementById("player-you");
+                if(row) {
+                    row.classList.add('lose');
+                    document.getElementById(`win-player-you`).innerText = "Lost";
+                    document.getElementById(`win-player-you`).className = 'player-lose-amount';
+                    document.getElementById(`win-player-you`).style.display = 'block';
+                }
             }
 
-            setTimeout(startRound, 3000);
+            // Apply colors to all fake players based on whether they cashed out
+            setTimeout(() => {
+                const allRows = document.querySelectorAll('.player-row');
+                allRows.forEach(row => {
+                    if (row.classList.contains('win') || row.classList.contains('lose')) return; // skip already processed
+                    
+                    const winEl = row.querySelector('.player-win-amount');
+                    if (winEl && winEl.style.display === 'block') {
+                        row.classList.add('win');
+                    } else {
+                        row.classList.add('lose');
+                        const loseEl = document.createElement('div');
+                        loseEl.className = 'player-lose-amount';
+                        loseEl.innerText = "Lost";
+                        loseEl.style.display = 'block';
+                        row.appendChild(loseEl);
+                    }
+                });
+            }, 500);
+
+            setTimeout(startRound, 4000);
         }
 
-        // --- 5. UI & Fake Players ---
         function addToHistory(mult) {
             const item = document.createElement('div');
             item.className = 'hist-item ' + (mult < 2 ? 'hist-red' : 'hist-green');
@@ -583,40 +616,43 @@
             row.className = 'player-row';
             row.id = id;
             row.innerHTML = `
-                <div class="player-name">${avatar} ${name}</div>
+                <div class="player-name"><span class="player-avatar">${avatar}</span> ${name}</div>
                 <div class="player-bet">💎 ${bet.toFixed(2)}</div>
-                <div class="player-win" id="win-${id}" style="display:none;"></div>
+                <div class="player-win-amount" id="win-${id}" style="display:none;"></div>
             `;
             playersList.prepend(row);
         }
 
         function updatePlayerInList(id, mult) {
-            const winEl = document.getElementById(`win-${id}`);
             const row = document.getElementById(id);
-            if (!winEl || !row) return;
+            if (!row) return;
+            
+            const winEl = document.getElementById(`win-${id}`);
+            if(!winEl) return;
 
+            // Fake player cashed out
             winEl.style.display = 'block';
-            if (mult === 0) {
-                winEl.innerText = "Lost";
-                winEl.style.color = "#ef4444";
-                row.style.opacity = '0.5';
-            } else {
-                winEl.innerText = "💎 " + (mult * 10).toFixed(2); // fake calc
-                row.classList.add('win');
-            }
+            winEl.innerText = "💎 " + (mult * 10).toFixed(2); // fake calc
+            row.classList.add('win');
         }
 
         function spawnFakePlayers() {
-            const names = ["DON", "Othman", "Sand", "Square", "Alex", "King", "Boi"];
-            const avatars = ["🧔", "👨‍🦲", "👩", "🥷", "🦁", "🐺"];
+            const names = ["Nova", "Viper", "Ghost", "Blaze", "Falcon", "Titan", "Neo", "Ace", "Rogue", "Reaper"];
+            const avatars = ["🥷", "👽", "🤖", "🦁", "🐺", "🦊", "👻", "💀", "👑", "🔥"];
+            const colors = ["#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6", "#ec4899"];
             
-            for(let i=0; i<4; i++) {
+            for(let i=0; i<5; i++) {
                 const id = 'fake-' + Math.random().toString(36).substr(2, 9);
                 const name = names[Math.floor(Math.random() * names.length)];
                 const avatar = avatars[Math.floor(Math.random() * avatars.length)];
                 const bet = Math.random() * 100 + 10;
+                const color = colors[Math.floor(Math.random() * colors.length)];
                 
                 addPlayerToList(name, avatar, bet, id);
+                
+                // Colorize name
+                const nameEl = document.querySelector(`#${id} .player-name`);
+                if(nameEl) nameEl.style.color = color;
 
                 const targetMult = Math.random() * crashPoint;
                 if (targetMult > 1.2) {
@@ -627,7 +663,6 @@
             }
         }
 
-        // Initialize
         updateBalanceUI();
     </script>
 </body>
